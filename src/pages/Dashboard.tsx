@@ -105,11 +105,11 @@ export function Dashboard() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+      <div className="px-1 sm:px-0">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">
           Welcome back, {user?.name}!
         </h1>
-        <p className="text-gray-600 mt-1">
+        <p className="text-sm sm:text-base text-gray-600 mt-1">
           {user?.role === 'admin' 
             ? 'Manage sports and monitor activity across the platform.' 
             : 'Discover and join exciting sports sessions in your area.'}
@@ -117,21 +117,21 @@ export function Dashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 xs:gap-4 sm:gap-5 md:gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => {
           const Icon = stat.icon;
           return (
             <div
               key={stat.name}
-              className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow"
+              className="bg-white rounded-lg sm:rounded-xl shadow-sm p-3 sm:p-4 md:p-6 border border-gray-100 hover:shadow-md transition-shadow"
             >
-              <div className="flex items-center">
-                <div className={`p-2 rounded-lg ${colorToClasses[stat.color].bg}`}>
-                  <Icon className={`h-6 w-6 ${colorToClasses[stat.color].text}`} />
+              <div className="flex flex-col xs:flex-row items-center xs:items-start sm:items-center">
+                <div className={`p-2 rounded-lg ${colorToClasses[stat.color].bg} mb-2 xs:mb-0`}>
+                  <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${colorToClasses[stat.color].text}`} />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">{stat.name}</p>
-                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                <div className="xs:ml-3 sm:ml-4 text-center xs:text-left">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600">{stat.name}</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">{stat.value}</p>
                 </div>
               </div>
             </div>
@@ -140,55 +140,57 @@ export function Dashboard() {
       </div>
 
       {/* Recent Sessions */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900">Recent Sessions</h3>
-          <p className="text-sm text-gray-600">Latest sports sessions created on the platform</p>
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900">Recent Sessions</h3>
+          <p className="text-xs sm:text-sm text-gray-600">Latest sports sessions created on the platform</p>
         </div>
         <div className="divide-y divide-gray-100">
           {recentSessions.length === 0 ? (
-            <div className="px-6 py-8 text-center">
-              <Calendar className="mx-auto h-12 w-12 text-gray-400" />
+            <div className="px-4 sm:px-6 py-6 sm:py-8 text-center">
+              <Calendar className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-medium text-gray-900">No sessions yet</h3>
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-xs sm:text-sm text-gray-500">
                 Get started by creating your first sports session.
               </p>
             </div>
           ) : (
             recentSessions.map((session) => (
-              <div key={session.id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
-                <div className="flex items-center justify-between">
+              <div key={session.id} className="px-3 sm:px-6 py-3 sm:py-4 hover:bg-gray-50 transition-colors">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                   <div className="flex-1">
-                    <h4 className="text-sm font-medium text-gray-900">{session.title}</h4>
-                    <div className="flex items-center space-x-4 mt-1">
-                      <span className="text-sm text-gray-500">{session.sport_name}</span>
-                      <span className="text-sm text-gray-500">{session.venue}</span>
-                      <span className="text-sm text-gray-500">
+                    <h4 className="text-sm font-medium text-gray-900 truncate">{session.title}</h4>
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-1">
+                      <span className="text-xs sm:text-sm text-gray-500">{session.sport_name}</span>
+                      <span className="text-xs sm:text-sm text-gray-500 truncate max-w-[150px]">{session.venue}</span>
+                      <span className="text-xs sm:text-sm text-gray-500">
                         {format(new Date(session.date), 'MMM d, yyyy')} at {session.time}
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-500">
+                  <div className="flex items-center justify-end space-x-2">
+                    <span className="text-xs sm:text-sm text-gray-500">
                       {session.current_participants}/{session.max_participants}
                     </span>
                     <Users className="h-4 w-4 text-gray-400" />
-                    {(session.created_by !== user?.id || user?.role === 'admin') && session.current_participants < session.max_participants && (
-                      <button
-                        onClick={async () => { await apiClient.joinSession(session.id.toString()); fetchDashboardData(); }}
-                        className="ml-3 px-3 py-1 bg-green-600 text-white rounded-md text-xs hover:bg-green-700"
-                      >
-                        Join
-                      </button>
-                    )}
-                    {(session.created_by === user?.id || user?.role === 'admin') && (
-                      <button
-                        onClick={() => setDeletingSession(session.id)}
-                        className="ml-3 px-3 py-1 text-red-600 border border-red-300 rounded-md text-xs hover:bg-red-50"
-                      >
-                        Delete
-                      </button>
-                    )}
+                    <div className="flex flex-wrap gap-2">
+                      {(session.created_by !== user?.id || user?.role === 'admin') && session.current_participants < session.max_participants && (
+                        <button
+                          onClick={async () => { await apiClient.joinSession(session.id.toString()); fetchDashboardData(); }}
+                          className="px-2 sm:px-3 py-1 bg-green-600 text-white rounded-md text-xs hover:bg-green-700"
+                        >
+                          Join
+                        </button>
+                      )}
+                      {(session.created_by === user?.id || user?.role === 'admin') && (
+                        <button
+                          onClick={() => setDeletingSession(session.id)}
+                          className="px-2 sm:px-3 py-1 text-red-600 border border-red-300 rounded-md text-xs hover:bg-red-50"
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

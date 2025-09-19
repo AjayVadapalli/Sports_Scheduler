@@ -1,61 +1,120 @@
-# Sports Scheduler Full-Stack Application
+# Sports Scheduler
 
-A comprehensive web application for managing sports events and sessions, built with React, Express.js, and PostgreSQL.
+A comprehensive full-stack web application for managing sports events and sessions. Built with React, TypeScript, Express.js, and PostgreSQL, this application allows users to create, join, and manage sports sessions with role-based access control.
 
 ## Features
 
 ### Authentication & Authorization
+
 - JWT-based authentication with role-based access control
 - Admin and Player user roles with different permissions
 - Secure password hashing with bcrypt
 - Protected routes and API endpoints
 
 ### Sports Management
+
 - Administrators can create and manage sports types
 - Each sport has configurable maximum player limits
 - Sports catalog with descriptions and participant limits
 
 ### Session Management
+
 - Create sports sessions with teams, venues, dates, and times
 - Join and leave sessions with real-time participant tracking
 - Session cancellation with reason tracking
 - Automatic participant count management
 
 ### Reporting & Analytics
+
 - Dashboard with key statistics and metrics
 - Sport popularity charts and session analytics
 - Date-range filtering for reports
 - Visual charts using Recharts library
 
 ### User Experience
+
 - Responsive design with Tailwind CSS
 - Modern, professional interface with smooth animations
 - Role-based navigation and dashboards
+- Form validation with React Hook Form
 - Real-time updates and notifications
+
+## Project Structure
+
+```
+Sports_Scheduler/
+├── src/                          # Frontend React application
+│   ├── components/               # Reusable UI components
+│   │   ├── AuthForm.tsx         # Authentication forms
+│   │   ├── Layout.tsx           # Main layout component
+│   │   └── ProtectedRoute.tsx   # Route protection wrapper
+│   ├── hooks/                   # Custom React hooks
+│   │   └── useAuth.ts           # Authentication hook
+│   ├── lib/                     # Utility libraries
+│   │   └── api.ts               # API client functions
+│   ├── pages/                   # Page components
+│   │   ├── Dashboard.tsx        # Main dashboard
+│   │   ├── MySessions.tsx       # User's sessions
+│   │   ├── Reports.tsx          # Analytics and reports
+│   │   ├── Sessions.tsx         # Sessions management
+│   │   └── Sports.tsx           # Sports management
+│   ├── types/                   # TypeScript type definitions
+│   │   └── index.ts             # Shared types
+│   ├── App.tsx                  # Main app component
+│   ├── main.tsx                 # App entry point
+│   └── index.css                # Global styles
+├── server/                      # Backend Express.js application
+│   ├── config/                  # Configuration files
+│   │   └── database.js          # Database configuration
+│   ├── middleware/              # Express middleware
+│   │   └── auth.js              # Authentication middleware
+│   ├── routes/                  # API routes
+│   │   ├── auth.js              # Authentication endpoints
+│   │   ├── reports.js           # Reports endpoints
+│   │   ├── sessions.js          # Sessions endpoints
+│   │   └── sports.js            # Sports endpoints
+│   ├── scripts/                 # Database scripts
+│   │   └── init-db.js           # Database initialization
+│   ├── server.js                # Main server file
+│   └── package.json             # Backend dependencies
+├── env.example                  # Environment variables template
+├── package.json                 # Frontend dependencies
+├── tailwind.config.js           # Tailwind CSS configuration
+├── tsconfig.json                # TypeScript configuration
+├── vite.config.ts               # Vite configuration
+└── README.md                    # This file
+```
 
 ## Tech Stack
 
 ### Frontend
+
 - **React 18** - Modern component-based UI library
 - **TypeScript** - Type-safe JavaScript development
 - **Tailwind CSS** - Utility-first CSS framework
-- **React Router** - Client-side routing
+- **React Router DOM** - Client-side routing
+- **React Hook Form** - Form handling and validation
 - **Recharts** - Data visualization library
 - **Lucide React** - Beautiful icon library
+- **date-fns** - Date utility library
 - **Vite** - Fast build tool and dev server
 
 ### Backend
+
 - **Node.js** - JavaScript runtime environment
 - **Express.js** - Web application framework
 - **PostgreSQL** - Relational database
-- **JWT** - JSON Web Tokens for authentication
-- **bcrypt** - Password hashing
+- **bcryptjs** - Password hashing
+- **jsonwebtoken** - JWT authentication
 - **CORS** - Cross-origin resource sharing
 - **Helmet** - Security middleware
+- **Morgan** - HTTP request logger
+- **dotenv** - Environment variable management
 
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v16 or higher)
 - PostgreSQL (v12 or higher)
 - npm or yarn package manager
@@ -63,16 +122,18 @@ A comprehensive web application for managing sports events and sessions, built w
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd sports-scheduler
    ```
 
 2. **Install dependencies**
+
    ```bash
    # Install frontend dependencies
    npm install
-   
+
    # Install backend dependencies
    cd server
    npm install
@@ -80,13 +141,14 @@ A comprehensive web application for managing sports events and sessions, built w
    ```
 
 3. **Database Setup**
+
    ```bash
    # Create PostgreSQL database
    createdb sports_scheduler
-   
+
    # Copy environment file and configure
-   cp .env.example .env
-   
+   cp env.example .env
+
    # Edit .env with your database credentials
    # DB_HOST=localhost
    # DB_PORT=5432
@@ -94,44 +156,52 @@ A comprehensive web application for managing sports events and sessions, built w
    # DB_USER=postgres
    # DB_PASSWORD=your_password
    # JWT_SECRET=your-secret-key
+   # CLIENT_URL=http://localhost:5173
    ```
 
 4. **Initialize Database**
+
    ```bash
    npm run init-db
    ```
 
 5. **Start Development Servers**
+
    ```bash
    # Start both frontend and backend
    npm run dev:full
-   
+
    # Or start separately:
    # Frontend (http://localhost:5173)
    npm run dev
-   
+
    # Backend (http://localhost:5000)
    npm run dev:server
    ```
 
 ### Default Admin Account
+
 After running the database initialization, you can log in with:
+
 - **Email**: admin@example.com
 - **Password**: admin123
 
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/signup` - User registration
 - `POST /api/auth/signin` - User login
 - `GET /api/auth/me` - Get current user
 
 ### Sports Management
+
 - `GET /api/sports` - Get all sports
 - `POST /api/sports` - Create sport (admin only)
 - `PUT /api/sports/:id` - Update sport (admin only)
 
 ### Session Management
+
 - `GET /api/sessions` - Get all sessions
 - `POST /api/sessions` - Create session
 - `POST /api/sessions/:id/join` - Join session
@@ -141,6 +211,7 @@ After running the database initialization, you can log in with:
 - `GET /api/sessions/my-joined` - Get user's joined sessions
 
 ### Reports
+
 - `GET /api/reports/stats` - Get dashboard statistics
 - `GET /api/reports/sport-popularity` - Get sport popularity data
 - `GET /api/reports/sessions-by-date` - Get sessions by date
@@ -148,6 +219,7 @@ After running the database initialization, you can log in with:
 ## Database Schema
 
 ### Users Table
+
 - `id` - Primary key
 - `email` - Unique email address
 - `password` - Hashed password
@@ -156,6 +228,7 @@ After running the database initialization, you can log in with:
 - `created_at` - Account creation timestamp
 
 ### Sports Table
+
 - `id` - Primary key
 - `name` - Sport name (unique)
 - `description` - Sport description
@@ -164,6 +237,7 @@ After running the database initialization, you can log in with:
 - `created_at` - Creation timestamp
 
 ### Sessions Table
+
 - `id` - Primary key
 - `sport_id` - Reference to sport
 - `title` - Session title
@@ -181,6 +255,7 @@ After running the database initialization, you can log in with:
 - `created_at` - Creation timestamp
 
 ### Session Participants Table
+
 - `id` - Primary key
 - `session_id` - Reference to session
 - `user_id` - Reference to user
@@ -189,6 +264,7 @@ After running the database initialization, you can log in with:
 ## Deployment
 
 ### Environment Variables
+
 Set the following environment variables for production:
 
 ```env
@@ -208,7 +284,10 @@ CLIENT_URL=https://your-frontend-domain.com
 NODE_ENV=production
 ```
 
+Copy `env.example` to `.env` and update the values according to your environment.
+
 ### Build for Production
+
 ```bash
 # Build frontend
 npm run build
@@ -217,6 +296,45 @@ npm run build
 cd server
 npm start
 ```
+
+## Development
+
+### Available Scripts
+
+#### Frontend (Root Directory)
+
+- `npm run dev` - Start Vite development server (http://localhost:5173)
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+#### Backend (server/ directory)
+
+- `npm run dev` - Start development server with nodemon (http://localhost:5000)
+- `npm start` - Start production server
+- `npm run init-db` - Initialize database with sample data
+
+#### Full Stack
+
+- `npm run dev:server` - Start backend development server
+- `npm run dev:full` - Start both frontend and backend concurrently
+- `npm run init-db` - Initialize database (runs from root)
+
+### Development Tips
+
+1. **Database Changes**: After modifying the database schema, update the initialization script in `server/scripts/init-db.js`
+2. **API Changes**: Update the API client functions in `src/lib/api.ts` when backend endpoints change
+3. **Types**: Add new TypeScript types in `src/types/index.ts` for consistency
+4. **Styling**: Use Tailwind CSS classes for consistent styling across components
+5. **Forms**: Utilize React Hook Form for form handling and validation
+
+### Code Style
+
+- Use TypeScript for type safety
+- Follow React best practices with functional components and hooks
+- Use ESLint for code quality
+- Implement proper error handling and loading states
+- Write descriptive commit messages
 
 ## Contributing
 
